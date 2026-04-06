@@ -45,7 +45,7 @@ const BannerAd = () => {
   }, []);
 
   return (
-    <div className="mt-auto pt-4 w-full flex justify-center overflow-hidden min-h-[66px]">
+    <div className="mb-4 w-full flex justify-center overflow-hidden min-h-[50px]">
       <div 
         ref={bannerRef}
         className="w-[320px] h-[50px] flex justify-center items-center bg-black/20 rounded-lg"
@@ -577,6 +577,9 @@ export default function App() {
       onPointerLeave={handlePointerUp}
       onPointerDown={initAudio}
     >
+      {/* Banner Ad at the top */}
+      <BannerAd />
+
       <AnimatePresence>
         {combo && (
           <motion.div
@@ -723,9 +726,6 @@ export default function App() {
       <div className="mt-8 text-white/30 font-bold text-3xl italic tracking-wider">
         ADDICTIVE!
       </div>
-
-      {/* Banner Ad */}
-      <BannerAd />
 
       {/* Floating Block */}
       {dragState && cellSize > 0 && (
