@@ -771,15 +771,13 @@ export default function App() {
             <p className="text-2xl mb-8 text-gray-300 font-bold">Score: {score}</p>
             
             <div className="flex flex-col gap-4 w-full">
-              {!hasRevived && (
-                <button
-                  onClick={handleRevive}
-                  className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-full transition-colors flex items-center justify-center gap-3 text-xl shadow-lg shadow-green-500/30"
-                >
-                  <PlaySquare size={24} />
-                  Watch Ad to Revive
-                </button>
-              )}
+              <button
+                onClick={handleRevive}
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-full transition-colors flex items-center justify-center gap-3 text-xl shadow-lg shadow-green-500/30"
+              >
+                <PlaySquare size={24} />
+                Watch Ad to Revive
+              </button>
               <button
                 onClick={restartGame}
                 className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-full transition-colors flex items-center justify-center gap-3 text-xl shadow-lg shadow-blue-500/30"
