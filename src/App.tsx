@@ -14,63 +14,96 @@ declare global {
 }
 
 const BannerAd = () => {
-  const bannerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    if (!bannerRef.current) return;
+    if (!iframeRef.current) return;
     
-    bannerRef.current.innerHTML = '';
+    const doc = iframeRef.current.contentWindow?.document;
+    if (!doc) return;
 
-    window.atOptions = {
-      'key' : '8038e3ac3cde9e8c01d7520f63beef93',
-      'format' : 'iframe',
-      'height' : 50,
-      'width' : 320,
-      'params' : {}
-    };
-
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = "https://www.highperformanceformat.com/8038e3ac3cde9e8c01d7520f63beef93/invoke.js";
-    script.async = true;
-    
-    bannerRef.current.appendChild(script);
-
-    return () => {
-      if (bannerRef.current) {
-        bannerRef.current.innerHTML = '';
-      }
-    };
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; }
+          </style>
+        </head>
+        <body>
+          <script type="text/javascript">
+            atOptions = {
+              'key' : '8038e3ac3cde9e8c01d7520f63beef93',
+              'format' : 'iframe',
+              'height' : 50,
+              'width' : 320,
+              'params' : {}
+            };
+          </script>
+          <script type="text/javascript" src="https://www.highperformanceformat.com/8038e3ac3cde9e8c01d7520f63beef93/invoke.js"></script>
+        </body>
+      </html>
+    `);
+    doc.close();
   }, []);
 
   return (
     <div className="mt-auto pt-4 w-full flex justify-center overflow-hidden min-h-[66px]">
-      <div ref={bannerRef} className="w-[320px] h-[50px] flex justify-center items-center bg-black/20 rounded-lg"></div>
+      <iframe 
+        ref={iframeRef}
+        title="Advertisement"
+        width="320" 
+        height="50" 
+        frameBorder="0" 
+        scrolling="no"
+        className="bg-black/20 rounded-lg"
+      />
     </div>
   );
 };
 
 const AdModal = ({ onClose }: { onClose: () => void }) => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = "https://pl29080417.profitablecpmratenetwork.com/101de369504aa0354319f3ebf87cca43/invoke.js";
-    script.async = true;
-    script.setAttribute('data-cfasync', 'false');
-    document.body.appendChild(script);
-    
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
+    if (!iframeRef.current) return;
+    const doc = iframeRef.current.contentWindow?.document;
+    if (!doc) return;
+
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; color: white; font-family: sans-serif; }
+          </style>
+        </head>
+        <body>
+          <script type="text/javascript" data-cfasync="false" src="https://pl29080417.profitablecpmratenetwork.com/101de369504aa0354319f3ebf87cca43/invoke.js"></script>
+          <div id="container-101de369504aa0354319f3ebf87cca43"></div>
+        </body>
+      </html>
+    `);
+    doc.close();
   }, []);
 
   return (
     <div className="fixed inset-0 bg-black/80 flex flex-col items-center justify-center z-[100] p-4">
       <div className="bg-[#2a3256] p-4 rounded-xl w-full max-w-[400px] flex flex-col items-center border border-white/10 shadow-2xl">
         <h3 className="text-white font-bold mb-4 text-xl">Advertisement</h3>
-        <div id="container-101de369504aa0354319f3ebf87cca43" className="min-h-[250px] w-full bg-black/40 rounded-lg flex items-center justify-center overflow-hidden relative">
-          <span className="text-white/30 text-sm absolute">Loading Ad...</span>
+        <div className="min-h-[250px] w-full bg-black/40 rounded-lg flex items-center justify-center overflow-hidden relative">
+          <span className="text-white/30 text-sm absolute pointer-events-none">Loading Ad...</span>
+          <iframe 
+            ref={iframeRef}
+            title="Modal Ad"
+            width="100%" 
+            height="250" 
+            frameBorder="0" 
+            scrolling="no"
+            className="relative z-10"
+          />
         </div>
         <button 
           onClick={onClose}
