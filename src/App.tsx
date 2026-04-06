@@ -14,50 +14,41 @@ declare global {
 }
 
 const BannerAd = () => {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!iframeRef.current) return;
+    if (!bannerRef.current) return;
     
-    const doc = iframeRef.current.contentWindow?.document;
-    if (!doc) return;
+    // Clear any existing ad content
+    bannerRef.current.innerHTML = '';
 
-    doc.open();
-    doc.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <style>
-            body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; }
-          </style>
-        </head>
-        <body>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : '8038e3ac3cde9e8c01d7520f63beef93',
-              'format' : 'iframe',
-              'height' : 50,
-              'width' : 320,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="https://www.highperformanceformat.com/8038e3ac3cde9e8c01d7520f63beef93/invoke.js"></script>
-        </body>
-      </html>
-    `);
-    doc.close();
+    // 1. Inject the configuration script
+    const confScript = document.createElement('script');
+    confScript.type = 'text/javascript';
+    confScript.innerHTML = `
+      atOptions = {
+        'key' : '8038e3ac3cde9e8c01d7520f63beef93',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    `;
+    bannerRef.current.appendChild(confScript);
+
+    // 2. Inject the ad network script
+    const invokeScript = document.createElement('script');
+    invokeScript.type = 'text/javascript';
+    invokeScript.src = "https://www.highperformanceformat.com/8038e3ac3cde9e8c01d7520f63beef93/invoke.js";
+    bannerRef.current.appendChild(invokeScript);
+
   }, []);
 
   return (
     <div className="mt-auto pt-4 w-full flex justify-center overflow-hidden min-h-[66px]">
-      <iframe 
-        ref={iframeRef}
-        title="Advertisement"
-        width="320" 
-        height="50" 
-        frameBorder="0" 
-        scrolling="no"
-        className="bg-black/20 rounded-lg"
+      <div 
+        ref={bannerRef}
+        className="w-[320px] h-[50px] flex justify-center items-center bg-black/20 rounded-lg"
       />
     </div>
   );
